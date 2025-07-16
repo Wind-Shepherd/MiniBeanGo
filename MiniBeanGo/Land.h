@@ -17,26 +17,26 @@ using namespace std;
 void loadImageEnlarged(IMAGE* img, LPCTSTR filename);
 #endif
 
-class Land  // µØÃæÀà
+class Land  // åœ°é¢ç±»
 {
 public:
-	IMAGE im_land;  // µØÃæÍ¼Ïñ
-	float left_x, right_x, top_y; // ÓÃÀ´¿Ì»­Ò»¿éµØÃæµÄ×ó¡¢ÓÒ¡¢ÉÏ×ø±ê
-	float land_width, land_height; // Ò»¿éµØÃæÍ¼ÏñµÄ¿í¶È¡¢¸ß¶È
+	IMAGE im_land;  // åœ°é¢å›¾åƒ
+	float left_x, right_x, top_y; // ç”¨æ¥åˆ»ç”»ä¸€å—åœ°é¢çš„å·¦ã€å³ã€ä¸Šåæ ‡
+	float land_width, land_height; // ä¸€å—åœ°é¢å›¾åƒçš„å®½åº¦ã€é«˜åº¦
 
-	void initialize() // ³õÊ¼»¯
+	void initialize() // åˆå§‹åŒ–
 	{
-		loadImageEnlarged(&im_land, _T("grass1.png")); // µ¼ÈëµØÃæÍ¼Æ¬
-		land_width = im_land.getwidth(); // »ñµÃµØÃæÍ¼ÏñµÄ¿í¡¢¸ß
+		loadImageEnlarged(&im_land, _T("grass0.png")); // å¯¼å…¥åœ°é¢å›¾ç‰‡
+		land_width = im_land.getwidth(); // è·å¾—åœ°é¢å›¾åƒçš„å®½ã€é«˜
 		land_height = im_land.getheight();
-		left_x = WIDTH / 2;  // land³õÊ¼»¯ÔÚ»­ÃæÕıÖĞ¼ä£¬ÕıºÃ¾ÍÔÚÍæ¼Ò½ÇÉ«½Åµ×ÏÂ
+		left_x = WIDTH / 2;  // landåˆå§‹åŒ–åœ¨ç”»é¢æ­£ä¸­é—´ï¼Œæ­£å¥½å°±åœ¨ç©å®¶è§’è‰²è„šåº•ä¸‹
 		right_x = left_x + land_width;
 		top_y = HEIGHT / 2;
 	}
 
 	void draw(float px, float py)
 	{
-		putimage(left_x - px, top_y - py, &im_land); // ½ÇÉ«²»¶¯£¬»æÖÆµØÃæÓĞÒ»¸öÆ«ÒÆÁ¿
+		putimage(left_x - px, top_y - py, &im_land); // è§’è‰²ä¸åŠ¨ï¼Œç»˜åˆ¶åœ°é¢æœ‰ä¸€ä¸ªåç§»é‡
 	}
 };
 
