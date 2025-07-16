@@ -67,9 +67,13 @@ void updateWithInput() // 和输入有关的更新
 {
 	player.standStill(); // 游戏角色默认为向左或向右静止站立
 
-	if (_kbhit()) // 当按键时，切换角色显示图片，更改位置
+		if (_kbhit()) // 当按键时，切换角色显示图片，更改位置
 	{
-		if (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D'))  // 按下D键或右方向键
+		if ((GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A')) && (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D'))) // 同时按下A键和D键或左右方向键
+		{
+			;//角色不动，既不向左也不向右奔跑
+		}
+		else if (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D'))  // 按下D键或右方向键
 		{
 			float rightBound = (WIDTH + ACTIVE_RANGE) / 2;
             if (player.x_left - sceneOffsetX < rightBound) {
