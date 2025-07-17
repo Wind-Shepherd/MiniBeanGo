@@ -41,6 +41,7 @@ float getPlayerScreenX() {
 
 void startup()  // 初始化
 {
+	sceneOffsetX = 0; // 场景偏移量归零
 	srand(time(0)); // 初始化随机数种子
 	scene.initialize();  // 场景初始化
 	player.initialize(); // 玩家角色初始化
