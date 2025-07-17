@@ -80,7 +80,7 @@ void updateWithInput() // 和输入有关的更新
                 player.runRight(scene);
             } else {
                 sceneOffsetX += player.vx; // 场景左移
-                player.runRight(scene, false); // 只切换动画，不移动角色
+                player.runRight(scene); // 只切换动画，不移动角色
             }
 		}
 		else if (GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A'))// 按下A键或左方向键
@@ -90,7 +90,7 @@ void updateWithInput() // 和输入有关的更新
                 player.runLeft(scene);
             } else {
                 sceneOffsetX -= player.vx; // 场景右移
-                player.runLeft(scene, false); // 只切换动画，不移动角色
+                player.runLeft(scene); // 只切换动画，不移动角色
             }
 		}
 		if (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))     // 按下W键或上方向键
