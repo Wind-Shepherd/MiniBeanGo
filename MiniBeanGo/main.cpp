@@ -12,7 +12,8 @@
 using namespace std;
 #define  WIDTH 1000  
 #define  HEIGHT 600
-
+#define ACTIVE_RANGE 400 // 角色活动范围宽度
+float sceneOffsetX = 0; // 场景横向偏移量
 
 
 // 一些全局变量
@@ -21,10 +22,21 @@ Scene scene;  // 定义场景全局对象
 Timer timer;  // 用于精确延时
 
 // 定义函数，随机生成两个整数间的任意整数
-int randBetweenMinMax(int min, int max)
-{
-	int r = rand() % (max - min + 1) + min;
-	return r;
+//int randBetweenMinMax(int min, int max)
+//{
+//	int r = rand() % (max - min + 1) + min;
+//	return r;
+//}
+
+float getPlayerScreenX() {
+	float leftBound = (WIDTH - ACTIVE_RANGE) / 2;
+	float rightBound = (WIDTH + ACTIVE_RANGE) / 2;
+	if (player.x_left - sceneOffsetX < leftBound)
+		return leftBound;
+	else if (player.x_left - sceneOffsetX > rightBound)
+		return rightBound;
+	else
+		return player.x_left - sceneOffsetX;
 }
 
 void startup()  // 初始化
@@ -38,8 +50,8 @@ void startup()  // 初始化
 
 void show()  // 显示
 {
-	scene.draw();   // 显示场景相关信息
-	player.draw();  // 显示玩家相关信息
+	scene.draw(sceneOffsetX, player.y_bottom - HEIGHT / 2);   // 显示场景相关信息
+	player.draw(sceneOffsetX); // 显示玩家相关信息
 	FlushBatchDraw(); // 批量绘制
 	timer.Sleep(50); // 暂停若干毫秒
 }
@@ -55,13 +67,29 @@ void updateWithInput() // 和输入有关的更新
 
 	if (_kbhit()) // 当按键时，切换角色显示图片，更改位置
 	{
-		if (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D'))  // 按下D键或右方向键
+		if ((GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A')) && (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D'))) // 同时按下A键和D键或左右方向键
 		{
-			player.runRight(scene);
+			;//角色不动，既不向左也不向右奔跑
+		}
+		else if (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D'))  // 按下D键或右方向键
+		{
+			float rightBound = (WIDTH + ACTIVE_RANGE) / 2;
+            if (player.x_left - sceneOffsetX < rightBound) {
+                player.runRight(scene);
+            } else {
+                sceneOffsetX += player.vx; // 场景左移
+                player.runRight(scene); // 只切换动画，不移动角色
+            }
 		}
 		else if (GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A'))// 按下A键或左方向键
 		{
-			player.runLeft(scene);
+			float leftBound = (WIDTH - ACTIVE_RANGE) / 2;
+            if (player.x_left - sceneOffsetX > leftBound) {
+                player.runLeft(scene);
+            } else {
+                sceneOffsetX -= player.vx; // 场景右移
+                player.runLeft(scene); // 只切换动画，不移动角色
+            }
 		}
 		if (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))     // 按下W键或上方向键
 		{

@@ -5,26 +5,45 @@ F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Land.h(30,32): warning C424
 F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Land.h(31,34): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
   (编译源文件“main.cpp”)
   
-F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Land.h(39,20): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Land.h(39,31): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Land.h(39,12): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Land.h(39,19): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Scene.h(46,28): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Scene.h(27,33): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(47,32): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Scene.h(27,22): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(47,15): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Scene.h(43,37): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
   (编译源文件“main.cpp”)
   
-F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(61,33): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(76,48): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(62,35): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(76,23): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   (编译源文件“main.cpp”)
   
-F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\main.cpp(32,12): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(85,14): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(85,30): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(125,48): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(125,23): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(142,33): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\Player.h(143,35): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\main.cpp(44,12): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\main.cpp(54,14): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   MiniBeanGo.vcxproj -> F:\study\C\class\2025 C实训-B301\项目\MiniBeanGo\x64\Debug\MiniBeanGo.exe

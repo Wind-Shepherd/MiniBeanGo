@@ -34,9 +34,9 @@ public:
 		top_y = HEIGHT / 2;
 	}
 
-	void draw()// 显示相关信息	
+	void draw(float px, float py)// 显示相关信息	
 	{
-		putimage(left_x, top_y, &im_land);  // 绘制一个地面
+		putimage(left_x - px, top_y - py, &im_land); // 角色不动，绘制地面有一个偏移量
 	}
 };
 

@@ -37,12 +37,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Bean0.png">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="Bean1.png">
-      <Filter>资源文件</Filter>
-    </Image>
     <Image Include="grass0.png">
       <Filter>资源文件</Filter>
     </Image>
@@ -53,6 +47,24 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="grass3.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Jumpleft.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Jumpright.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Runleft.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Runright.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Standleft.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Standright.png">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

@@ -137,12 +137,16 @@
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Bean0.png" />
-    <Image Include="Bean1.png" />
     <Image Include="grass0.png" />
     <Image Include="grass1.png" />
     <Image Include="grass2.png" />
     <Image Include="grass3.png" />
+    <Image Include="Jumpleft.png" />
+    <Image Include="Jumpright.png" />
+    <Image Include="Runleft.png" />
+    <Image Include="Runright.png" />
+    <Image Include="Standleft.png" />
+    <Image Include="Standright.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
