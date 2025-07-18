@@ -1,0 +1,49 @@
+﻿  main.cpp
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Land.h(30,32): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Land.h(31,34): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Land.h(39,31): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Land.h(39,19): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Scene.h(27,33): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Scene.h(27,22): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Scene.h(43,37): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Player.h(76,48): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Player.h(76,23): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Player.h(85,14): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Player.h(85,30): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Player.h(125,48): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Player.h(125,23): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Player.h(142,33): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\Player.h(143,35): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+  (编译源文件“main.cpp”)
+  
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\main.cpp(45,12): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\main.cpp(55,14): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  MiniBeanGo.vcxproj -> C:\Users\Ed\source\repos\MiniBeanGo-Demo-Ver.0.5\MiniBeanGo\x64\Debug\MiniBeanGo.exe
