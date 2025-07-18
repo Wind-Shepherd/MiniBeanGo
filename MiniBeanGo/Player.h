@@ -12,7 +12,9 @@
 
 using namespace std;
 #define  WIDTH 1000  
-#define  HEIGHT 600\
+#define  HEIGHT 600
+#define GRAVITY 4
+#define ACTIVE_RANGE_Y 300 // ½ÇÉ«»î¶¯·¶Î§¸ß¶È
 
 #ifndef IMAGE_UTILS_H
 #define IMAGE_UTILS_H
@@ -20,212 +22,494 @@ using namespace std;
 void loadImageEnlarged(IMAGE* img, LPCTSTR filename);
 #endif
 
-enum PlayerStatus // æšä¸¾ç±»å‹ï¼Œæ¸¸æˆè§’è‰²æ‰€æœ‰çš„å¯èƒ½çŠ¶æ€
+enum PlayerStatus // Ã¶¾ÙÀàĞÍ£¬ÓÎÏ·½ÇÉ«ËùÓĞµÄ¿ÉÄÜ×´Ì¬
 {
-	standright, jumpright, standleft, jumpleft, die
+	standright, jumpright, standleft, jumpleft, die, climb
 };
 
-class Player  // ç©å®¶æ§åˆ¶çš„æ¸¸æˆè§’è‰²ç±»
+enum PlayerHealthStatus {
+	full_health,
+	half_health,
+	no_health
+};
+
+class Player  // Íæ¼Ò¿ØÖÆµÄÓÎÏ·½ÇÉ«Àà
 {
 public:
-	IMAGE im_show;  // å½“å‰æ—¶åˆ»è¦æ˜¾ç¤ºçš„å›¾åƒ
-	IMAGE im_standright; // å‘å³ç«™ç«‹å›¾åƒ
-	IMAGE im_standleft; // å‘å·¦ç«™ç«‹å›¾åƒ
-	IMAGE im_jumpright; // å‘å³æ–¹å‘è·³è·ƒå›¾åƒ
-	IMAGE im_jumpleft; // å‘å·¦æ–¹å‘è·³è·ƒå›¾åƒ
-	vector <IMAGE> ims_runright; // å‘å³å¥”è·‘çš„å›¾åƒåºåˆ—
-	vector <IMAGE> ims_runleft; // å‘å·¦å¥”è·‘çš„å›¾åƒåºåˆ—
-	int animId;  // ç”¨äºå¾ªç¯åŠ¨ç”»æ’­æ”¾çš„id
-	PlayerStatus playerStatus; // å½“å‰çš„çŠ¶æ€
-	float x_left, y_bottom; // è¿™ä¸¤ä¸ªåæ ‡ï¼Œå› ä¸ºåªè¦ç”¨è¿™ä¸¤ä¸ªå’Œåœ°é¢ç¢°æ’å°±è¡Œäº†
-	float vx, vy; // é€Ÿåº¦
-	float gravity; // é‡åŠ›åŠ é€Ÿåº¦
-	float width, height; // å›¾ç‰‡çš„å®½åº¦ã€é«˜åº¦
+	IMAGE im_show;  // µ±Ç°Ê±¿ÌÒªÏÔÊ¾µÄÍ¼Ïñ
+	IMAGE im_standright; // ÏòÓÒÕ¾Á¢Í¼Ïñ
+	IMAGE im_standleft; // Ïò×óÕ¾Á¢Í¼Ïñ
 
-	void draw()// æ˜¾ç¤ºç›¸å…³ä¿¡æ¯	
+	// ĞÂÔö£ºÓÃÓÚ²Ã¼ô¶¯»­µÄµ¥ÕÅÍ¼Æ¬
+	IMAGE im_runright_sprite; // ÏòÓÒ±¼ÅÜµÄ¾«ÁéÍ¼£¨°üº¬¶àÖ¡£©
+	IMAGE im_runleft_sprite;  // Ïò×ó±¼ÅÜµÄ¾«ÁéÍ¼£¨°üº¬¶àÖ¡£©
+	IMAGE im_jumpright_sprite; // ÏòÓÒÌøÔ¾µÄ¾«ÁéÍ¼£¨°üº¬¶àÖ¡£©
+	IMAGE im_jumpleft_sprite;  // Ïò×óÌøÔ¾µÄ¾«ÁéÍ¼£¨°üº¬¶àÖ¡£©
+	IMAGE im_climb_sprite;// ÏòÅÀµÄ¾«ÁéÍ¼£¨°üº¬¶àÖ¡£©
+
+	// ĞÂÔö£ºÑªÁ¿×´Ì¬¶ÔÓ¦µÄÍ¼Æ¬
+	IMAGE im_full_health;
+	IMAGE im_half_health;
+	IMAGE im_no_health;
+
+	int animId;  // ÓÃÓÚÑ­»·¶¯»­²¥·ÅµÄid
+	PlayerStatus playerStatus; // µ±Ç°µÄ×´Ì¬
+	float x_left, y_bottom; // ÕâÁ½¸ö×ø±ê£¬ÒòÎªÖ»ÒªÓÃÕâÁ½¸öºÍµØÃæÅö×²¾ÍĞĞÁË
+	float vx, vy; // ËÙ¶È
+	float gravity; // ÖØÁ¦¼ÓËÙ¶È
+	float width, height; // Í¼Æ¬µÄ¿í¶È¡¢¸ß¶È
+
+	// ÓÃÓÚÅÜ²½¶¯»­µÄ±äÁ¿
+	int frameWidth, frameHeight; // µ¥Ö¡µÄ¿í¶ÈºÍ¸ß¶È
+	int totalFrames; // ×ÜÖ¡Êı
+	int frameDelay; // Ö¡ÑÓ³Ù¼ÆÊıÆ÷
+	int currentFrame; // µ±Ç°Ö¡Ë÷Òı
+	bool useSpriteCut; // ÊÇ·ñÊ¹ÓÃ¾«ÁéÍ¼²Ã¼ôÄ£Ê½
+
+	// ÌøÔ¾¶¯»­Ïà¹Ø±äÁ¿
+	int jumpFrameWidth, jumpFrameHeight; // ÌøÔ¾¶¯»­µ¥Ö¡µÄ¿í¶ÈºÍ¸ß¶È
+	int jumpTotalFrames; // ÌøÔ¾¶¯»­×ÜÖ¡Êı
+	int jumpFrameDelay; // ÌøÔ¾¶¯»­Ö¡ÑÓ³Ù¼ÆÊıÆ÷
+	int jumpCurrentFrame; // ÌøÔ¾¶¯»­µ±Ç°Ö¡Ë÷Òı
+
+	// ÌøÔ¾¶¯»­Ïà¹Ø±äÁ¿
+	int climbFrameWidth, climbFrameHeight; // ÌøÔ¾¶¯»­µ¥Ö¡µÄ¿í¶ÈºÍ¸ß¶È
+	int climbTotalFrames; // ÌøÔ¾¶¯»­×ÜÖ¡Êı
+	int climbFrameDelay; // ÌøÔ¾¶¯»­Ö¡ÑÓ³Ù¼ÆÊıÆ÷
+	int climbCurrentFrame; // ÌøÔ¾¶¯»­µ±Ç°Ö¡Ë÷Òı
+
+	float getXRight() const { return x_left + width; }  // ½ÇÉ«ÓÒ±ß½ç
+	float getYTop() const { return y_bottom - height; } // ½ÇÉ«ÉÏ±ß½ç
+	float getYBottom() const { return y_bottom; }       // ½ÇÉ«ÏÂ±ß½ç
+
+	PlayerHealthStatus healthStatus;
+
+	void draw(int sceneOffsetX)// ÏÔÊ¾Ïà¹ØĞÅÏ¢	
 	{
-		putimagePng(x_left, y_bottom - height, &im_show);  // æ¸¸æˆä¸­æ˜¾ç¤ºè§’è‰²
+		if (useSpriteCut)
+		{
+			// Ê¹ÓÃ²Ã¼ôäÖÈ¾
+			drawClippedFrame(sceneOffsetX);
+		}
+		else
+		{
+			// Ê¹ÓÃÔ­ÓĞµÄäÖÈ¾·½Ê½
+			putimagePng(x_left - sceneOffsetX, y_bottom - height - sceneOffsetY, &im_show);
+		}
 	}
 
-	void initialize() // åˆå§‹åŒ–
+	// »æÖÆ²Ã¼ôÖ¡µÄº¯Êı
+	void drawClippedFrame(int sceneOffsetX)
 	{
-		ims_runleft.clear(); // å…ˆæ¸…ç©ºæ‰vector
-		ims_runright.clear();
-		loadImageEnlarged(&im_standleft, _T("Beanleft0.png")); // å¯¼å…¥ç«™ç«‹å›¾ç‰‡
-		loadImageEnlarged(&im_jumpleft, _T("Beanleft1.png")); // å¯¼å…¥è·³å›¾ç‰‡
-		loadImageEnlarged(&im_standright, _T("Beanright0.png")); // å¯¼å…¥ç«™ç«‹å›¾ç‰‡
-		loadImageEnlarged(&im_jumpright, _T("Beanright1.png")); // å¯¼å…¥è·³å›¾ç‰‡
+		IMAGE* spriteImage = nullptr;
+		int srcX = 0, srcY = 0;
+		int frameW = width, frameH = height;
 
-		playerStatus = standright; // åˆå§‹ä¸ºç«™ç«‹çš„æ¸¸æˆçŠ¶æ€
-		im_show = im_standright;  // åˆå§‹æ˜¾ç¤ºç«™ç«‹çš„å›¾ç‰‡
-		width = im_standright.getwidth(); // è·å¾—å›¾åƒçš„å®½ã€é«˜ï¼Œæ‰€æœ‰åŠ¨ç”»å›¾ç‰‡å¤§å°ä¸€æ ·
+		if (playerStatus == standright)
+		{
+			spriteImage = &im_runright_sprite;
+			srcX = currentFrame * frameW;
+			srcY = 0;
+		}
+		else if (playerStatus == standleft)
+		{
+			spriteImage = &im_runleft_sprite;
+			srcX = currentFrame * frameW;
+			srcY = 0;
+		}
+		else if (playerStatus == jumpright)
+		{
+			spriteImage = &im_jumpright_sprite;
+			srcX = jumpCurrentFrame * frameW;
+			srcY = 0;
+		}
+		else if (playerStatus == jumpleft)
+		{
+			spriteImage = &im_jumpleft_sprite;
+			srcX = jumpCurrentFrame * frameW;
+			srcY = 0;
+		}
+		else if (playerStatus == climb)
+		{
+			spriteImage = &im_climb_sprite;
+			srcX = climbCurrentFrame * frameW;
+			srcY = 0;
+		}
+
+		if (spriteImage != nullptr)
+		{
+			// ´´½¨ÁÙÊ±Í¼Ïñ´æ´¢²Ã¼ô½á¹û
+			IMAGE tempImg;
+			tempImg.Resize(frameW, frameH);
+
+			// ½«²Ã¼ôÇøÓò¸´ÖÆµ½ÁÙÊ±Í¼Ïñ
+			SetWorkingImage(&tempImg);
+			putimage(0, 0, frameW, frameH, spriteImage, srcX, srcY);
+			SetWorkingImage(); // »Ö¸´µ½Ä¬ÈÏ¹¤×÷Í¼Ïñ
+
+			// äÖÈ¾µ½ÆÁÄ»
+			putimagePng(x_left - sceneOffsetX, y_bottom - height - sceneOffsetY, &tempImg);
+		}
+	}
+
+	void drawHealthStatus() {
+		IMAGE* healthImg = nullptr;
+		switch (healthStatus) {
+		case full_health:
+			healthImg = &im_full_health;
+			break;
+		case half_health:
+			healthImg = &im_half_health;
+			break;
+		case no_health:
+			healthImg = &im_no_health;
+			break;
+		}
+		if (healthImg != nullptr) {
+			putimagePng(10, 10, healthImg); // »æÖÆÔÚÆÁÄ»×óÉÏ½Ç
+		}
+	}
+
+	void initialize() // ³õÊ¼»¯
+	{
+
+		loadImageEnlarged(&im_standright, _T("Standright.png")); // µ¼ÈëÓÒÕ¾Á¢Í¼Æ¬
+		loadImageEnlarged(&im_standleft, _T("Standleft.png")); // µ¼Èë×óÕ¾Á¢Í¼Æ¬
+		loadImageEnlarged(&im_jumpright_sprite, _T("Jumpright.png")); // µ¼ÈëÓÒÌøÍ¼Æ¬
+		loadImageEnlarged(&im_jumpleft_sprite, _T("Jumpleft.png")); // µ¼Èë×óÌøÍ¼Æ¬
+		loadImageEnlarged(&im_runright_sprite, _T("Runright.png")); // ÏòÓÒ±¼ÅÜ¾«ÁéÍ¼Æ¬
+		loadImageEnlarged(&im_runleft_sprite, _T("Runleft.png"));   // Ïò×ó±¼ÅÜ¾«ÁéÍ¼Æ¬
+		loadImageEnlarged(&im_climb_sprite, _T("Climb.png"));   // ÅÀÍ¼Æ¬
+
+		playerStatus = standright; // ³õÊ¼ÎªÕ¾Á¢µÄÓÎÏ·×´Ì¬
+		im_show = im_standright;  // ³õÊ¼ÏÔÊ¾Õ¾Á¢µÄÍ¼Æ¬
+		width = im_standright.getwidth(); // »ñµÃÍ¼ÏñµÄ¿í¡¢¸ß£¬ËùÓĞ¶¯»­Í¼Æ¬´óĞ¡Ò»Ñù
 		height = im_standright.getheight();
 
+		totalFrames = 6; // ÓĞ6Ö¡¶¯»­
+		frameDelay = 0;
+		currentFrame = 0;
 
-		TCHAR filename[80];
-		for (int i = 0;i <= 1;i++) // æŠŠå‘å³å¥”è·‘çš„ä¸¤å¼ å›¾ç‰‡å¯¹è±¡æ·»åŠ åˆ°ims_runleftä¸­
-		{
-			_stprintf_s(filename, _T("Beanleft%d.png"), i);
-			IMAGE im;
-			loadImageEnlarged(&im, filename);
-			ims_runleft.push_back(im);
-		}
-		for (int i = 0;i <= 1;i++) // æŠŠå‘å·¦å¥”è·‘çš„ä¸¤å¼ å›¾ç‰‡å¯¹è±¡æ·»åŠ åˆ°ims_runrightä¸­
-		{
-			_stprintf_s(filename, _T("Beanright%d.png"), i);
-			IMAGE im;
-			loadImageEnlarged(&im, filename);
-			ims_runright.push_back(im);
-		}
-		animId = 0; // åŠ¨ç”»idå¼€å§‹è®¾ä¸º0
+		jumpTotalFrames = 8; // ÌøÔ¾¶¯»­ÓĞ8Ö¡
+		jumpFrameDelay = 0;
+		jumpCurrentFrame = 2;
 
-		updateXY(WIDTH / 2, HEIGHT / 2); // å¼€å§‹å°†è§’è‰²æ”¾åœ¨ç”»é¢ä¸­é—´
-		vx = 4; // æ°´å¹³æ–¹å‘åˆé€Ÿåº¦
-		vy = 0;  // ç«–ç›´æ–¹å‘é€Ÿåº¦åˆå§‹ä¸º0
-		gravity = 4;  // è®¾å®šé‡åŠ›åŠ é€Ÿåº¦
+		climbTotalFrames = 4; // ÅÀ¶¯»­ÓĞ4Ö¡
+		climbFrameDelay = 0;
+		climbCurrentFrame = 0;
+
+		updateXY(WIDTH / 2, HEIGHT / 2); // ¿ªÊ¼½«½ÇÉ«·ÅÔÚ»­ÃæÖĞ¼ä
+		vx = 4; // Ë®Æ½·½Ïò³õËÙ¶È
+		vy = 0;  // ÊúÖ±·½ÏòËÙ¶È³õÊ¼Îª0
+		gravity = GRAVITY;  // Éè¶¨ÖØÁ¦¼ÓËÙ¶È
+
+		useSpriteCut = true; // ÆôÓÃ¾«ÁéÍ¼²Ã¼ôÄ£Ê½
 	}
 
-	void updateXY(float mx, float my) // æ ¹æ®è¾“å…¥ï¼Œæ›´æ–°ç©å®¶åæ ‡
+	void updateXY(float mx, float my) // ¸ù¾İÊäÈë£¬¸üĞÂÍæ¼Ò×ø±ê
 	{
 		x_left = mx;
 		y_bottom = my;
+
 	}
 
-	void runRight(Scene& scene) // æ¸¸æˆè§’è‰²å‘å³å¥”è·‘
+	void runRight(Scene& scene) // ÓÎÏ·½ÇÉ«ÏòÓÒ±¼ÅÜ
 	{
-		x_left += vx; // æ¨ªåæ ‡å¢åŠ ï¼Œå‘å³ç§»åŠ¨
-		if (isNotOnAllLands(scene.lands, vy))  // ç§»åŠ¨åä¸åœ¨ä»»ä½•ä¸€å—åœ°é¢ä¸Šäº†
+		float correctedX = x_left;
+		if (checkHorizontalCollision(vx, scene, true)) {
+			x_left = correctedX; // Ê¹ÓÃĞŞÕıºóµÄx×ø±ê
+			// ±£³Öµ±Ç°¶¯»­×´Ì¬
+			if (playerStatus == standright || playerStatus == jumpright) {
+				frame(&frameDelay, &currentFrame, &totalFrames);
+			}
+			return;
+		}
+		x_left += vx; // ºá×ø±êÔö¼Ó£¬ÏòÓÒÒÆ¶¯
+		if (isNotOnAllLands(scene.lands, vy))  // ÒÆ¶¯ºó²»ÔÚÈÎºÎÒ»¿éµØÃæÉÏÁË
 		{
-			im_show = im_jumpright;// åˆ‡æ¢åˆ°å‘å³èµ·è·³å›¾ç‰‡
-			playerStatus = jumpright;// åˆ‡æ¢åˆ°å‘å³èµ·è·³çŠ¶æ€
+			im_show = im_jumpright_sprite;// ÇĞ»»µ½ÏòÓÒÆğÌøÍ¼Æ¬
+			playerStatus = jumpright;// ÇĞ»»µ½ÏòÓÒÆğÌø×´Ì¬
+			useSpriteCut = true; // ÌøÔ¾Ê±Ê¹ÓÃ¾«ÁéÍ¼²Ã¼ô
 			return;
 		}
 
-		if (playerStatus == jumpleft || playerStatus == jumpright) // å¦‚æœæ˜¯èµ·è·³çŠ¶æ€
+		if (playerStatus == jumpleft || playerStatus == jumpright) // Èç¹ûÊÇÆğÌø×´Ì¬
 		{
-			im_show = im_jumpright; // æ”¹å˜é€ å‹ä¸ºå‘å³èµ·è·³é€ å‹
+			im_show = im_jumpright_sprite; // ¸Ä±äÔìĞÍÎªÏòÓÒÆğÌøÔìĞÍ
+			useSpriteCut = true; // ÌøÔ¾Ê±Ê¹ÓÃ¾«ÁéÍ¼²Ã¼ô
+			frame(&jumpFrameDelay, &jumpCurrentFrame, &jumpTotalFrames);
 		}
 		else
 		{
-			if (playerStatus != standright) // å¦‚æœä¹‹å‰è§’è‰²çŠ¶æ€ä¸æ˜¯å‘å³å¥”è·‘
-			{
-				playerStatus = standright; // åˆ‡æ¢ä¸ºå‘å³å¥”è·‘çŠ¶æ€
-				animId = 0; // åŠ¨ç”»æ’­æ”¾idåˆå§‹åŒ–ä¸º0
-			}
-			else // è¡¨ç¤ºä¹‹å‰å°±æ˜¯å‘å³å¥”è·‘çŠ¶æ€äº†
-			{
-			animId++; // åŠ¨ç”»å›¾ç‰‡å¼€å§‹åˆ‡æ¢
-			if (animId >= ims_runright.size()) // å¾ªç¯åˆ‡æ¢
-				animId = 0;
-			}
-			im_show = ims_runright[animId];	 // è®¾ç½®è¦æ˜¾ç¤ºçš„å¯¹åº”å›¾ç‰‡	 
+			playerStatus = standright; // ÉèÖÃÎªÏòÓÒ×´Ì¬
+			useSpriteCut = true; // ÆôÓÃ¾«ÁéÍ¼²Ã¼ô
+			frame(&frameDelay, &currentFrame, &totalFrames);
 		}
 	}
 
-	void runLeft(Scene& scene) // æ¸¸æˆè§’è‰²å‘å·¦å¥”è·‘
+
+
+	void runLeft(Scene& scene) // ÓÎÏ·½ÇÉ«Ïò×ó±¼ÅÜ
 	{
-		x_left -= vx; // æ¨ªåæ ‡å‡å°‘ï¼Œå‘å·¦ç§»åŠ¨		
-		if (isNotOnAllLands(scene.lands, vy))  // ç§»åŠ¨åä¸åœ¨ä»»ä½•ä¸€å—åœ°é¢ä¸Šäº†
+		float correctedX = x_left;
+		if (checkHorizontalCollision(vx, scene, false)) {
+			x_left = correctedX; // Ê¹ÓÃĞŞÕıºóµÄx×ø±ê
+			// ±£³Öµ±Ç°¶¯»­×´Ì¬
+			if (playerStatus == standleft || playerStatus == jumpleft) {
+				frame(&frameDelay, &currentFrame, &totalFrames);
+			}
+			return;
+		}
+		x_left -= vx; // ºá×ø±ê¼õÉÙ£¬Ïò×óÒÆ¶¯		
+		if (isNotOnAllLands(scene.lands, vy))  // ÒÆ¶¯ºó²»ÔÚÈÎºÎÒ»¿éµØÃæÉÏÁË
 		{
-			im_show = im_jumpleft; // åˆ‡æ¢åˆ°å‘å·¦èµ·è·³å›¾ç‰‡
-			playerStatus = jumpleft; // åˆ‡æ¢åˆ°å‘å·¦èµ·è·³çŠ¶æ€
+			im_show = im_jumpleft_sprite; // ÇĞ»»µ½Ïò×óÆğÌøÍ¼Æ¬
+			playerStatus = jumpleft; // ÇĞ»»µ½Ïò×óÆğÌø×´Ì¬
+			useSpriteCut = true; // ÌøÔ¾Ê±Ê¹ÓÃ¾«ÁéÍ¼²Ã¼ô
 			return;
 		}
 
-		if (playerStatus == jumpleft || playerStatus == jumpright) // å¦‚æœæ˜¯èµ·è·³çŠ¶æ€
+		if (playerStatus == jumpleft || playerStatus == jumpright) // Èç¹ûÊÇÆğÌø×´Ì¬
 		{
-			im_show = im_jumpleft; // æ”¹å˜é€ å‹ä¸ºå‘å·¦èµ·è·³é€ å‹
+			im_show = im_jumpleft_sprite; // ¸Ä±äÔìĞÍÎªÏò×óÆğÌøÔìĞÍ
+			useSpriteCut = true; // ÌøÔ¾Ê±Ê¹ÓÃ¾«ÁéÍ¼²Ã¼ô
+			frame(&jumpFrameDelay, &jumpCurrentFrame, &jumpTotalFrames);
 		}
 		else
 		{
-			if (playerStatus != standleft) // å¦‚æœä¹‹å‰è§’è‰²çŠ¶æ€ä¸æ˜¯å‘å·¦å¥”è·‘
-			{
-				playerStatus = standleft; // åˆ‡æ¢ä¸ºå‘å·¦å¥”è·‘çŠ¶æ€
-				animId = 0; // åŠ¨ç”»æ’­æ”¾idåˆå§‹åŒ–ä¸º0
-			}
-			else // ä¹‹å‰å°±æ˜¯å‘å·¦å¥”è·‘çŠ¶æ€äº†
-			{
-			animId++; // åŠ¨ç”»å›¾ç‰‡å¼€å§‹åˆ‡æ¢
-			if (animId >= ims_runleft.size()) // å¾ªç¯åˆ‡æ¢
-				animId = 0;
-			}
-			im_show = ims_runleft[animId];	 // è®¾ç½®è¦æ˜¾ç¤ºçš„å¯¹åº”å›¾ç‰‡	
+			playerStatus = standleft; // ÉèÖÃÎªÏò×ó×´Ì¬
+			useSpriteCut = true; // ÆôÓÃ¾«ÁéÍ¼²Ã¼ô
+			frame(&frameDelay, &currentFrame, &totalFrames);
 		}
 	}
 
-	void standStill() // æ¸¸æˆè§’è‰²é»˜è®¤ä¸ºå‘å·¦æˆ–å‘å³é™æ­¢ç«™ç«‹
+	void standStill() // ÓÎÏ·½ÇÉ«Ä¬ÈÏÎªÏò×ó»òÏòÓÒ¾²Ö¹Õ¾Á¢
 	{
 		if (playerStatus == standleft)
 		{
 			im_show = im_standleft;
+			useSpriteCut = false; // ¾²Ö¹Ê±²»Ê¹ÓÃ¾«ÁéÍ¼²Ã¼ô
 		}
 		else if (playerStatus == standright)
 		{
 			im_show = im_standright;
+			useSpriteCut = false; // ¾²Ö¹Ê±²»Ê¹ÓÃ¾«ÁéÍ¼²Ã¼ô
 		}
 	}
 
-	void beginJump() // æŒ‰ä¸‹wæˆ–å‘ä¸Šæ–¹å‘é”®åï¼Œæ¸¸æˆè§’è‰²è·³è·ƒçš„å¤„ç†
+	void beginJump(Scene& scene) // °´ÏÂw»òÏòÉÏ·½Ïò¼üºó£¬ÓÎÏ·½ÇÉ«ÌøÔ¾µÄ´¦Àí
 	{
-		if (playerStatus != jumpleft && playerStatus != jumpright) // å·²ç»åœ¨ç©ºä¸­çš„è¯ï¼Œä¸è¦èµ·è·³
-		{
-			if (playerStatus == standleft)  // èµ·è·³å‰æ˜¯å‘å·¦è·‘æˆ–å‘å·¦ç«™ç«‹çŠ¶æ€
+		if (!isNotOnAllLadders(scene.ladders, vy)) {
+			im_show = im_climb_sprite; // ÇĞ»»µ½ÅÀÍ¼Æ¬
+			playerStatus = climb; // ÇĞ»»µ½ÅÀ×´Ì¬
+			vy = -3; // ¸ø½ÇÉ«Ò»¸öÏòÉÏµÄ³õËÙ¶È
+			//gravity = 0;
+			useSpriteCut = true;
+		}
+		else {
+			//gravity = GRAVITY;
+			if (playerStatus != jumpleft && playerStatus != jumpright) // ÒÑ¾­ÔÚ¿ÕÖĞµÄ»°£¬²»ÒªÆğÌø
 			{
-				im_show = im_jumpleft; // åˆ‡æ¢åˆ°å‘å·¦èµ·è·³å›¾ç‰‡
-				playerStatus = jumpleft; // åˆ‡æ¢åˆ°å‘å·¦èµ·è·³çŠ¶æ€
+				if (playerStatus == standleft) {
+					im_show = im_jumpleft_sprite; // ÇĞ»»µ½Ïò×óÆğÌøÍ¼Æ¬
+					playerStatus = jumpleft; // ÇĞ»»µ½Ïò×óÆğÌø×´Ì¬
+				}
+				else if (playerStatus == standright)// ÆğÌøÇ°ÊÇÏòÓÒÅÜ»òÏòÓÒÕ¾Á¢×´Ì¬
+				{
+					im_show = im_jumpright_sprite;// ÇĞ»»µ½ÏòÓÒÆğÌøÍ¼Æ¬
+					playerStatus = jumpright;// ÇĞ»»µ½ÏòÓÒÆğÌø×´Ì¬
+				}
+				vy = -40; // ¸ø½ÇÉ«Ò»¸öÏòÉÏµÄ³õËÙ¶È
+				PlayMusicOnce(_T("jump.mp3"));
 			}
-			else if (playerStatus == standright)// èµ·è·³å‰æ˜¯å‘å³è·‘æˆ–å‘å³ç«™ç«‹çŠ¶æ€
-			{
-				im_show = im_jumpright;// åˆ‡æ¢åˆ°å‘å³èµ·è·³å›¾ç‰‡
-				playerStatus = jumpright;// åˆ‡æ¢åˆ°å‘å³èµ·è·³çŠ¶æ€
-			}
-			vy = -40; // ç»™è§’è‰²ä¸€ä¸ªå‘ä¸Šçš„åˆé€Ÿåº¦
+			useSpriteCut = true;
 		}
 	}
 
-	// åˆ¤æ–­æ¸¸æˆè§’è‰²æ˜¯å¦æ­£ç«™åœ¨è¿™å—åœ°é¢ä¸Šï¼Œå¦‚æœæ˜¯çš„è¯è¿”å›1ï¼Œå¦åˆ™è¿”å›0
+	// ÅĞ¶ÏÓÎÏ·½ÇÉ«ÊÇ·ñÕıÕ¾ÔÚÕâ¿éµØÃæÉÏ£¬Èç¹ûÊÇµÄ»°·µ»Ø1£¬·ñÔò·µ»Ø0
 	int isOnLand(Land& land, float ySpeed)
 	{
 		float x_right = x_left + width;
-		// åˆ¤æ–­æ˜¯å¦ç«™åœ¨åœ°é¢ä¸Šï¼Œè¿˜éœ€è¦è€ƒè™‘playerçš„yæ–¹å‘é€Ÿåº¦æƒ…å†µï¼Œé€Ÿåº¦è¿‡å¿«æœ‰å¯èƒ½ç›´æ¥ç©¿é€åœ°é¢
-		if (ySpeed <= 0) // yè½´æ–¹å‘é€Ÿåº¦å°äº0ï¼Œè¡¨ç¤ºæ­£åœ¨å‘ä¸Šè¿åŠ¨ï¼Œä¸éœ€è¦è€ƒè™‘é€Ÿåº¦çš„å½±å“
+		// ÅĞ¶ÏÊÇ·ñÕ¾ÔÚµØÃæÉÏ£¬»¹ĞèÒª¿¼ÂÇplayerµÄy·½ÏòËÙ¶ÈÇé¿ö£¬ËÙ¶È¹ı¿ìÓĞ¿ÉÄÜÖ±½Ó´©Í¸µØÃæ
+		if (ySpeed <= 0) // yÖá·½ÏòËÙ¶ÈĞ¡ÓÚ0£¬±íÊ¾ÕıÔÚÏòÉÏÔË¶¯£¬²»ĞèÒª¿¼ÂÇËÙ¶ÈµÄÓ°Ïì
 			ySpeed = 0;
-		if (land.left_x - x_left <= width * 0.6 && x_right - land.right_x <= width * 0.6 && abs(y_bottom - land.top_y) <= 3 + ySpeed)
+		if (land.left_x - x_left <= width * 0.6 && x_right - land.right_x <= width * 0.6 && abs(y_bottom - land.top_y) <= 0 + ySpeed)
 			return 1;
 		else
 			return 0;
 	}
 
-	int isNotOnAllLands(vector<Land>& lands, float speed) // åˆ¤æ–­ç©å®¶æ˜¯å¦ä¸åœ¨æ‰€æœ‰çš„åœ°é¢ä¸Š
+	int isNotOnAllLands(vector<Land>& lands, float speed) // ÅĞ¶ÏÍæ¼ÒÊÇ·ñ²»ÔÚËùÓĞµÄµØÃæÉÏ
 	{
 		for (int i = 0;i < lands.size();i++)
 		{
 			if (isOnLand(lands[i], speed))
-				return 0; // åœ¨ä»»ä½•ä¸€å—åœ°é¢ä¸Šï¼Œè¿”å›0
+				return 0; // ÔÚÈÎºÎÒ»¿éµØÃæÉÏ£¬·µ»Ø0
 		}
-		return 1; // ä¸åœ¨æ‰€æœ‰åœ°é¢ä¸Šï¼Œè¿”å›1
+		return 1; // ²»ÔÚËùÓĞµØÃæÉÏ£¬·µ»Ø1
 	}
 
-	void updateYcoordinate(Scene& scene) // xåæ ‡æ˜¯æŒ‰é”®ç›˜æ§åˆ¶çš„ï¼Œè€Œyåæ ‡æ˜¯æ¯å¸§è‡ªåŠ¨æ›´æ–°çš„
-	{
-		if (playerStatus == jumpleft || playerStatus == jumpright) // å½“å‰æ˜¯åœ¨ç©ºä¸­è·³è·ƒçŠ¶æ€
-		{
-			if(vy<=8){
-				vy += gravity; // yæ–¹å‘é€Ÿåº¦å—é‡åŠ›å½±å“å˜åŒ–
+	void updateYcoordinate(Scene& scene) {
+		// Í³Ò»¼ÓËÙ¶È
+		if (playerStatus == jumpleft || playerStatus == jumpright) {
+			if (vy <= 8) vy += gravity;
+		}
+
+		float newY = y_bottom + vy;
+		float topBound = (HEIGHT - ACTIVE_RANGE_Y) / 2;
+		float bottomBound = (HEIGHT + ACTIVE_RANGE_Y) / 2;
+
+		// ¼ÆËã½ÇÉ«ÆÁÄ»×ø±êÎ»ÖÃ£¨½ÇÉ«×ø±ê - ³¡¾°Æ«ÒÆ£©
+		float playerScreenY = newY - sceneOffsetY;
+
+		// ½ÇÉ«ÔÚ»î¶¯ÇøÄÚ£¬Ö±½Ó¸üĞÂÎ»ÖÃ
+		if (playerScreenY >= topBound && playerScreenY <= bottomBound) {
+			y_bottom = newY;
+		}
+		// ½ÇÉ«ÒªÍùÉÏ³¬³ö»î¶¯Çø
+		else if (playerScreenY < topBound) {
+			sceneOffsetY += vy;
+			y_bottom = newY;
+		}
+		// ½ÇÉ«ÒªÍùÏÂ³¬³ö»î¶¯Çø
+		else if (playerScreenY > bottomBound) {
+			sceneOffsetY += vy;
+			y_bottom = newY;
+		}
+
+		// ÌøÔ¾¶¯»­Ö¡²¥·Å
+		if (playerStatus == jumpright || playerStatus == jumpleft) {
+			frame(&jumpFrameDelay, &jumpCurrentFrame, &jumpTotalFrames);
+		}
+		else if (playerStatus == climb && (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))) {
+			frame(&climbFrameDelay, &climbCurrentFrame, &climbTotalFrames);
+		}
+
+		// ¼ì²éµØÃæÅö×²£¨ÂäµØ£©
+		if (playerStatus == jumpleft || playerStatus == jumpright) {
+			for (int i = 0; i < scene.lands.size(); ++i) {
+				if (isOnLand(scene.lands[i], vy)) {
+					y_bottom = scene.lands[i].top_y;
+					vy = 0;
+					jumpCurrentFrame = 2;
+					jumpFrameDelay = 0;
+					playerStatus = (playerStatus == jumpleft) ? standleft : standright;
+					break;
+				}
 			}
-			y_bottom += vy;  // yæ–¹å‘ä½ç½®å—é€Ÿåº¦å½±å“å˜åŒ–
-			for (int i = 0;i < scene.lands.size();i++)   // å¯¹æ‰€æœ‰åœ°é¢éå†
-			{
-				if (isOnLand(scene.lands[i], vy)) // å½“ç«æŸ´äººæ­£å¥½ç«™åœ¨ä¸€ä¸ªåœ°é¢ä¸Šæ—¶
-				{
-					y_bottom = scene.lands[i].top_y; // ä¿è¯æ­£å¥½è½åœ¨åœ°é¢ä¸Š
-					if (playerStatus == jumpleft) // å‘å·¦è·³ï¼Œè½åœ°ååˆ‡æ¢åˆ°å‘å·¦ç«™ç«‹æ–¹å‘
-						playerStatus = standleft;
-					if (playerStatus == jumpright) // å‘å³è·³ï¼Œè½åœ°ååˆ‡æ¢åˆ°å‘å³ç«™ç«‹æ–¹å‘
-						playerStatus = standright;
-					break; // è·³å‡ºå¾ªç¯ï¼Œä¸éœ€è¦å†å¯¹å…¶ä»–åœ°é¢åˆ¤æ–­äº†
+			for (int i = 0; i < scene.ladders.size(); ++i) {
+				if (isOnLadder(scene.ladders[i], vy)) {
+					y_bottom = scene.ladders[i].top_y;
+					vy = 0;
+					climbCurrentFrame = 0;
+					climbFrameDelay = 0;
+					playerStatus = standright;
+					break;
 				}
 			}
 		}
+
+		// ÅÀÌİÂß¼­
+		if (playerStatus == climb && (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))) {
+			if (isNotOnAllLadders(scene.ladders, vy)) {
+				playerStatus = standright;
+				vy = 0;
+			}
+		}
+		else if (playerStatus == climb) {
+			vy = 0;
+		}
+
+	}
+
+
+	void frame(int* frameDelay, int* currentFrame, int* totalFrames) {
+		useSpriteCut = true; // ÆôÓÃ¾«ÁéÍ¼²Ã¼ô
+
+		// ¸üĞÂ¶¯»­Ö¡
+		(*frameDelay)++;
+		if (*frameDelay >= 2) // ¿ØÖÆ¶¯»­ËÙ¶È£¬ÊıÖµÔ½´ó¶¯»­Ô½Âı
+		{
+			*frameDelay = 0;
+			(*currentFrame)++;
+			if (*currentFrame >= *totalFrames) // Ñ­»·²¥·Å
+			{
+				*currentFrame = 0;
+			}
+		}
+	}
+	// ÅĞ¶ÏÓÎÏ·½ÇÉ«ÊÇ·ñÕıÕ¾ÔÚÌİ×ÓÉÏ£¬Èç¹ûÊÇµÄ»°·µ»Ø1£¬·ñÔò·µ»Ø0
+	int isOnLadder(Ladder& ladder, float ySpeed)
+	{
+		float x_right = x_left + width;
+		// ÅĞ¶ÏÊÇ·ñÕ¾ÔÚÌİ×ÓÉÏ
+		if (ladder.left_x - x_left <= width * 0.6 && x_right - ladder.right_x <= width * 0.6 && y_bottom - ladder.top_y > 0)
+			return 1;
+		else
+			return 0;
+	}
+	int isNotOnAllLadders(vector<Ladder>& Ladders, float speed) // ÅĞ¶ÏÍæ¼ÒÊÇ·ñ²»ÔÚËùÓĞµÄÌİ×ÓÉÏ
+	{
+		for (int i = 0;i < Ladders.size();i++)
+		{
+			if (isOnLadder(Ladders[i], speed))
+				return 0; // ÔÚÈÎºÎÒ»¿éÌİ×ÓÉÏ£¬·µ»Ø0
+		}
+		return 1; // ²»ÔÚËùÓĞÌİ×ÓÉÏ£¬·µ»Ø1
+	}
+
+	void PlayMusicOnce(const wchar_t* fileName) // ²¥·ÅÒ»´ÎÒôÀÖÎÄ¼ş
+	{
+		wchar_t cmdString1[50];
+		swprintf_s(cmdString1, L"open %s alias tmpmusic", fileName); // ¹¹ÔìÃüÁî×Ö·û´®
+		mciSendStringW(L"close tmpmusic", NULL, 0, NULL); // ÏÈ½«µ±Ç°µÄÒ»´ÎÒôÀÖÍ£Ö¹¹Ø±Õ
+		mciSendStringW(cmdString1, NULL, 0, NULL); // ´ò¿ªÒôÀÖ
+		mciSendStringW(L"play tmpmusic", NULL, 0, NULL); // ²¥·ÅÒ»´Î
+	}
+
+	// ĞÂÔö£º¿Û³ıÑªÁ¿µÄ·½·¨£¬Ö§³Ö¼õ°ë¿ÅĞÄ»òÒ»¿ÅĞÄ
+	void reduceHealth(bool halfHeart) {
+		switch (healthStatus) {
+		case full_health:
+			if (halfHeart) {
+				healthStatus = half_health;
+			}
+			else {
+				healthStatus = no_health;
+			}
+			break;
+		case half_health:
+			healthStatus = no_health;
+			break;
+		case no_health:
+			// ÒÑ¾­Ã»ÓĞÑªÁ¿£¬²»×ö´¦Àí
+			break;
+		}
+	}
+
+	// ¼ì²â×óÓÒÒÆ¶¯ÊÇ·ñ»áÓëµØÃæÅö×²
+	bool checkHorizontalCollision(float moveDelta, Scene& scene, bool isRight) {
+		float newXLeft = x_left + (isRight ? moveDelta : -moveDelta);
+		float newXRight = newXLeft + width;
+		float yTop = getYTop();
+		float yBottom = y_bottom;
+		const float collisionTolerance = 20.0f;
+
+		for (auto& land : scene.lands) {
+			// ´¹Ö±·½ÏòÊÇ·ñÖØµş
+			bool verticalOverlap = (yBottom > land.top_y) && (yTop < land.top_y + land.land_height);
+			if (!verticalOverlap) continue;
+
+			// ÏòÓÒÒÆ¶¯£º¼ì²âÊÇ·ñ»á×²ÉÏµØÃæ×ó²à
+			if (isRight && newXRight > land.left_x + collisionTolerance && newXLeft < land.left_x) {
+				return true;
+			}
+			// Ïò×óÒÆ¶¯£º¼ì²âÊÇ·ñ»á×²ÉÏµØÃæÓÒ²à
+			else if (!isRight && newXLeft < land.right_x - collisionTolerance && newXRight > land.right_x) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 };

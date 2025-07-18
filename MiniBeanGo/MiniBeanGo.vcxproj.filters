@@ -35,24 +35,189 @@
     <ClInclude Include="Player.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Ladder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Star.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicPlayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthHeart.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundThorn.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Bean0.png">
+    <Image Include="star.png">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="Bean1.png">
+    <Image Include="Standright.png">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="grass0.png">
+    <Image Include="Standleft.png">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="grass1.png">
+    <Image Include="SOIL_BLOCK7.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SOIL_BLOCK6.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SOIL_BLOCK5.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SOIL_BLOCK4.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SOIL_BLOCK3.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SOIL_BLOCK2.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SOIL_BLOCK1.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SOIL_BLOCK0.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="snow3.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="snow2.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="snow1.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="snow0.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SNOW_BLOCK7.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SNOW_BLOCK6.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SNOW_BLOCK5.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SNOW_BLOCK4.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SNOW_BLOCK3.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SNOW_BLOCK2.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SNOW_BLOCK1.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SNOW_BLOCK0.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Runright.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Runleft.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="landscape1.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="LadderTop.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Ladder.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Jumpright.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Jumpleft.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="heart_half.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="heart_full.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="heart_empty.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="groundthorn.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="grass3.png">
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="grass2.png">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="grass3.png">
+    <Image Include="grass1.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="grass0.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="GRASS_BLOCK7.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="GRASS_BLOCK6.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="GRASS_BLOCK5.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="GRASS_BLOCK4.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="GRASS_BLOCK3.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="GRASS_BLOCK2.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="GRASS_BLOCK1.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="GRASS_BLOCK0.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="DIRT_PATH66.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="DIRT_PATH7.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="DIRT_PATH6.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="DIRT_PATH5.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="DIRT_PATH4.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="DIRT_PATH3.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="DIRT_PATH2.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="DIRT_PATH1.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="DIRT_PATH0.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="Climb.png">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>
