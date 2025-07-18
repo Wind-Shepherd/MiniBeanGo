@@ -16,21 +16,43 @@ using namespace std;
 
 
 // 一些全局变量
-Player player;  // 定义玩家控制的游戏角色对象
+Player player;  // 定义玩家控制的游戏角色对象.
 Scene scene;  // 定义场景全局对象
 Timer timer;  // 用于精确延时
-
-// 定义函数，随机生成两个整数间的任意整数
-int randBetweenMinMax(int min, int max)
-{
-	int r = rand() % (max - min + 1) + min;
-	return r;
-}
 
 void startup()  // 初始化
 {
 	srand(time(0)); // 初始化随机数种子
 	scene.initialize();  // 场景初始化
+	scene.setLandType(1,8, GRASS_BLOCK1);
+	scene.setLandType(2, 8, GRASS_BLOCK1);
+	scene.setLandType(3, 7, GRASS_BLOCK2);
+	scene.setLandType(4, 7, GRASS_BLOCK1);
+	scene.setLandType(5, 7, GRASS_BLOCK1);
+	scene.setLandType(6, 7, GRASS_BLOCK1);
+	scene.setLandType(7, 8, SOIL_BLOCK1);
+	scene.setLandType(7, 7, GRASS_BLOCK3);
+	scene.setLandType(8, 9, GRASS_BLOCK3);
+	scene.setLandType(9, 10, GRASS_BLOCK3);
+	scene.setLandType(10, 11, GRASS_BLOCK1);
+	scene.setLandType(11, 11, GRASS_BLOCK1);
+	scene.setLandType(12, 11, GRASS_BLOCK1);
+	scene.setLandType(13, 10, GRASS_BLOCK2);
+	scene.setLandType(14, 10, GRASS_BLOCK1);
+	scene.setLandType(15, 10, DIRT_PATH1);
+	scene.setLandType(16, 10, DIRT_PATH2);
+	scene.setLandType(17, 11, DIRT_PATH1);
+	scene.setLandType(18, 11, DIRT_PATH1);
+	scene.setLandType(19, 11, DIRT_PATH1);
+	scene.setLandType(20, 10, SNOW_BLOCK1);
+	scene.setLandType(21, 9, SOIL_BLOCK1);
+	scene.setLandType(21, 8, SNOW_BLOCK1);
+	scene.setLandType(22, 7, SNOW_BLOCK1);
+	scene.setLandType(22, 8, SOIL_BLOCK1);
+
+
+
+
 	player.initialize(); // 玩家角色初始化
 	initgraph(WIDTH, HEIGHT); // 新开一个画面
 	BeginBatchDraw(); // 开始批量绘制
@@ -65,7 +87,7 @@ void updateWithInput() // 和输入有关的更新
 		}
 		if (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))     // 按下W键或上方向键
 		{
-			player.beginJump();
+			player.beginJump(scene);
 		}
 	}
 }

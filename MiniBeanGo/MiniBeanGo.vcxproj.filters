@@ -55,5 +55,11 @@
     <Image Include="grass3.png">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="samplea.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="SOIL_BLOCK1.png">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

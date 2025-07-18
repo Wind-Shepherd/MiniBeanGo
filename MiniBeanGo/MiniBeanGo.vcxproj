@@ -143,6 +143,8 @@
     <Image Include="grass1.png" />
     <Image Include="grass2.png" />
     <Image Include="grass3.png" />
+    <Image Include="samplea.png" />
+    <Image Include="SOIL_BLOCK1.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

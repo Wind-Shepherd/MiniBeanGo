@@ -12,7 +12,7 @@
 
 using namespace std;
 #define  WIDTH 1000  
-#define  HEIGHT 600\
+#define  HEIGHT 600
 
 #ifndef IMAGE_UTILS_H
 #define IMAGE_UTILS_H
@@ -20,212 +20,276 @@ using namespace std;
 void loadImageEnlarged(IMAGE* img, LPCTSTR filename);
 #endif
 
-enum PlayerStatus // æšä¸¾ç±»å‹ï¼Œæ¸¸æˆè§’è‰²æ‰€æœ‰çš„å¯èƒ½çŠ¶æ€
+enum PlayerStatus // ½ÇÉ«×´Ì¬Ã¶¾Ù
 {
-	standright, jumpright, standleft, jumpleft, die
+    standright, jumpright, standleft, jumpleft, die
 };
 
-class Player  // ç©å®¶æ§åˆ¶çš„æ¸¸æˆè§’è‰²ç±»
+class Player  // Íæ¼Ò½ÇÉ«Àà
 {
 public:
-	IMAGE im_show;  // å½“å‰æ—¶åˆ»è¦æ˜¾ç¤ºçš„å›¾åƒ
-	IMAGE im_standright; // å‘å³ç«™ç«‹å›¾åƒ
-	IMAGE im_standleft; // å‘å·¦ç«™ç«‹å›¾åƒ
-	IMAGE im_jumpright; // å‘å³æ–¹å‘è·³è·ƒå›¾åƒ
-	IMAGE im_jumpleft; // å‘å·¦æ–¹å‘è·³è·ƒå›¾åƒ
-	vector <IMAGE> ims_runright; // å‘å³å¥”è·‘çš„å›¾åƒåºåˆ—
-	vector <IMAGE> ims_runleft; // å‘å·¦å¥”è·‘çš„å›¾åƒåºåˆ—
-	int animId;  // ç”¨äºå¾ªç¯åŠ¨ç”»æ’­æ”¾çš„id
-	PlayerStatus playerStatus; // å½“å‰çš„çŠ¶æ€
-	float x_left, y_bottom; // è¿™ä¸¤ä¸ªåæ ‡ï¼Œå› ä¸ºåªè¦ç”¨è¿™ä¸¤ä¸ªå’Œåœ°é¢ç¢°æ’å°±è¡Œäº†
-	float vx, vy; // é€Ÿåº¦
-	float gravity; // é‡åŠ›åŠ é€Ÿåº¦
-	float width, height; // å›¾ç‰‡çš„å®½åº¦ã€é«˜åº¦
-
-	void draw()// æ˜¾ç¤ºç›¸å…³ä¿¡æ¯	
-	{
-		putimagePng(x_left, y_bottom - height, &im_show);  // æ¸¸æˆä¸­æ˜¾ç¤ºè§’è‰²
-	}
-
-	void initialize() // åˆå§‹åŒ–
-	{
-		ims_runleft.clear(); // å…ˆæ¸…ç©ºæ‰vector
-		ims_runright.clear();
-		loadImageEnlarged(&im_standleft, _T("Beanleft0.png")); // å¯¼å…¥ç«™ç«‹å›¾ç‰‡
-		loadImageEnlarged(&im_jumpleft, _T("Beanleft1.png")); // å¯¼å…¥è·³å›¾ç‰‡
-		loadImageEnlarged(&im_standright, _T("Beanright0.png")); // å¯¼å…¥ç«™ç«‹å›¾ç‰‡
-		loadImageEnlarged(&im_jumpright, _T("Beanright1.png")); // å¯¼å…¥è·³å›¾ç‰‡
-
-		playerStatus = standright; // åˆå§‹ä¸ºç«™ç«‹çš„æ¸¸æˆçŠ¶æ€
-		im_show = im_standright;  // åˆå§‹æ˜¾ç¤ºç«™ç«‹çš„å›¾ç‰‡
-		width = im_standright.getwidth(); // è·å¾—å›¾åƒçš„å®½ã€é«˜ï¼Œæ‰€æœ‰åŠ¨ç”»å›¾ç‰‡å¤§å°ä¸€æ ·
-		height = im_standright.getheight();
+    IMAGE im_show;               // µ±Ç°ÏÔÊ¾Í¼Ïñ
+    IMAGE im_standright;         // ÏòÓÒÕ¾Á¢
+    IMAGE im_standleft;          // Ïò×óÕ¾Á¢
+    IMAGE im_jumpright;          // ÏòÓÒÌøÔ¾
+    IMAGE im_jumpleft;           // Ïò×óÌøÔ¾
+    vector<IMAGE> ims_runright;  // ÏòÓÒ±¼ÅÜĞòÁĞ
+    vector<IMAGE> ims_runleft;   // Ïò×ó±¼ÅÜĞòÁĞ
+    int animId;                  // ¶¯»­Ö¡Ë÷Òı
+    PlayerStatus playerStatus;   // µ±Ç°×´Ì¬
+    float x, y;                  // ½ÇÉ«Î»ÖÃ£¨Íø¸ñ×ø±ê£©
+    float vx, vy;                // Ë®Æ½¡¢ÊúÖ±ËÙ¶È
+    float gravity;               // ÖØÁ¦¼ÓËÙ¶È
+    float width, height;         // ½ÇÉ«¿í¸ß£¨ÏñËØ£©
 
 
-		TCHAR filename[80];
-		for (int i = 0;i <= 1;i++) // æŠŠå‘å³å¥”è·‘çš„ä¸¤å¼ å›¾ç‰‡å¯¹è±¡æ·»åŠ åˆ°ims_runleftä¸­
-		{
-			_stprintf_s(filename, _T("Beanleft%d.png"), i);
-			IMAGE im;
-			loadImageEnlarged(&im, filename);
-			ims_runleft.push_back(im);
-		}
-		for (int i = 0;i <= 1;i++) // æŠŠå‘å·¦å¥”è·‘çš„ä¸¤å¼ å›¾ç‰‡å¯¹è±¡æ·»åŠ åˆ°ims_runrightä¸­
-		{
-			_stprintf_s(filename, _T("Beanright%d.png"), i);
-			IMAGE im;
-			loadImageEnlarged(&im, filename);
-			ims_runright.push_back(im);
-		}
-		animId = 0; // åŠ¨ç”»idå¼€å§‹è®¾ä¸º0
+    Player() : x(0), y(0), animId(0), playerStatus(standright) {}
 
-		updateXY(WIDTH / 2, HEIGHT / 2); // å¼€å§‹å°†è§’è‰²æ”¾åœ¨ç”»é¢ä¸­é—´
-		vx = 4; // æ°´å¹³æ–¹å‘åˆé€Ÿåº¦
-		vy = 0;  // ç«–ç›´æ–¹å‘é€Ÿåº¦åˆå§‹ä¸º0
-		gravity = 4;  // è®¾å®šé‡åŠ›åŠ é€Ÿåº¦
-	}
+    void draw()// »æÖÆ½ÇÉ«
+    {
+        // ½«Íø¸ñ×ø±ê×ª»»ÎªÏñËØ×ø±ê
+        float screenX = x * GRID_SIZE;
+        float screenY = y * GRID_SIZE - height;  // ´Óµ×²¿ÏòÉÏ»æÖÆ
 
-	void updateXY(float mx, float my) // æ ¹æ®è¾“å…¥ï¼Œæ›´æ–°ç©å®¶åæ ‡
-	{
-		x_left = mx;
-		y_bottom = my;
-	}
+        putimagePng(screenX, screenY, &im_show);
+    }
 
-	void runRight(Scene& scene) // æ¸¸æˆè§’è‰²å‘å³å¥”è·‘
-	{
-		x_left += vx; // æ¨ªåæ ‡å¢åŠ ï¼Œå‘å³ç§»åŠ¨
-		if (isNotOnAllLands(scene.lands, vy))  // ç§»åŠ¨åä¸åœ¨ä»»ä½•ä¸€å—åœ°é¢ä¸Šäº†
-		{
-			im_show = im_jumpright;// åˆ‡æ¢åˆ°å‘å³èµ·è·³å›¾ç‰‡
-			playerStatus = jumpright;// åˆ‡æ¢åˆ°å‘å³èµ·è·³çŠ¶æ€
-			return;
-		}
+    void initialize() // ³õÊ¼»¯
+    {
+        // Çå¿Õ¶¯»­ĞòÁĞ
+        ims_runleft.clear();
+        ims_runright.clear();
 
-		if (playerStatus == jumpleft || playerStatus == jumpright) // å¦‚æœæ˜¯èµ·è·³çŠ¶æ€
-		{
-			im_show = im_jumpright; // æ”¹å˜é€ å‹ä¸ºå‘å³èµ·è·³é€ å‹
-		}
-		else
-		{
-			if (playerStatus != standright) // å¦‚æœä¹‹å‰è§’è‰²çŠ¶æ€ä¸æ˜¯å‘å³å¥”è·‘
-			{
-				playerStatus = standright; // åˆ‡æ¢ä¸ºå‘å³å¥”è·‘çŠ¶æ€
-				animId = 0; // åŠ¨ç”»æ’­æ”¾idåˆå§‹åŒ–ä¸º0
-			}
-			else // è¡¨ç¤ºä¹‹å‰å°±æ˜¯å‘å³å¥”è·‘çŠ¶æ€äº†
-			{
-			animId++; // åŠ¨ç”»å›¾ç‰‡å¼€å§‹åˆ‡æ¢
-			if (animId >= ims_runright.size()) // å¾ªç¯åˆ‡æ¢
-				animId = 0;
-			}
-			im_show = ims_runright[animId];	 // è®¾ç½®è¦æ˜¾ç¤ºçš„å¯¹åº”å›¾ç‰‡	 
-		}
-	}
+        // ¼ÓÔØ½ÇÉ«Í¼Æ¬
+        loadImageEnlarged(&im_standleft, _T("Beanleft0.png"));
+        loadImageEnlarged(&im_jumpleft, _T("Beanleft1.png"));
+        loadImageEnlarged(&im_standright, _T("Beanright0.png"));
+        loadImageEnlarged(&im_jumpright, _T("Beanright1.png"));
 
-	void runLeft(Scene& scene) // æ¸¸æˆè§’è‰²å‘å·¦å¥”è·‘
-	{
-		x_left -= vx; // æ¨ªåæ ‡å‡å°‘ï¼Œå‘å·¦ç§»åŠ¨		
-		if (isNotOnAllLands(scene.lands, vy))  // ç§»åŠ¨åä¸åœ¨ä»»ä½•ä¸€å—åœ°é¢ä¸Šäº†
-		{
-			im_show = im_jumpleft; // åˆ‡æ¢åˆ°å‘å·¦èµ·è·³å›¾ç‰‡
-			playerStatus = jumpleft; // åˆ‡æ¢åˆ°å‘å·¦èµ·è·³çŠ¶æ€
-			return;
-		}
+        // ¼ÓÔØ±¼ÅÜ¶¯»­ĞòÁĞ
+        TCHAR filename[80];
+        for (int i = 0; i <= 1; i++) {
+            _stprintf_s(filename, _T("Beanleft%d.png"), i);
+            IMAGE im;
+            loadImageEnlarged(&im, filename);
+            ims_runleft.push_back(im);
+        }
+        for (int i = 0; i <= 1; i++) {
+            _stprintf_s(filename, _T("Beanright%d.png"), i);
+            IMAGE im;
+            loadImageEnlarged(&im, filename);
+            ims_runright.push_back(im);
+        }
 
-		if (playerStatus == jumpleft || playerStatus == jumpright) // å¦‚æœæ˜¯èµ·è·³çŠ¶æ€
-		{
-			im_show = im_jumpleft; // æ”¹å˜é€ å‹ä¸ºå‘å·¦èµ·è·³é€ å‹
-		}
-		else
-		{
-			if (playerStatus != standleft) // å¦‚æœä¹‹å‰è§’è‰²çŠ¶æ€ä¸æ˜¯å‘å·¦å¥”è·‘
-			{
-				playerStatus = standleft; // åˆ‡æ¢ä¸ºå‘å·¦å¥”è·‘çŠ¶æ€
-				animId = 0; // åŠ¨ç”»æ’­æ”¾idåˆå§‹åŒ–ä¸º0
-			}
-			else // ä¹‹å‰å°±æ˜¯å‘å·¦å¥”è·‘çŠ¶æ€äº†
-			{
-			animId++; // åŠ¨ç”»å›¾ç‰‡å¼€å§‹åˆ‡æ¢
-			if (animId >= ims_runleft.size()) // å¾ªç¯åˆ‡æ¢
-				animId = 0;
-			}
-			im_show = ims_runleft[animId];	 // è®¾ç½®è¦æ˜¾ç¤ºçš„å¯¹åº”å›¾ç‰‡	
-		}
-	}
+        // »ñÈ¡Í¼Æ¬³ß´ç
+        width = im_standright.getwidth();
+        height = im_standright.getheight();
 
-	void standStill() // æ¸¸æˆè§’è‰²é»˜è®¤ä¸ºå‘å·¦æˆ–å‘å³é™æ­¢ç«™ç«‹
-	{
-		if (playerStatus == standleft)
-		{
-			im_show = im_standleft;
-		}
-		else if (playerStatus == standright)
-		{
-			im_show = im_standright;
-		}
-	}
+        // ³õÊ¼»¯×´Ì¬²ÎÊı
+        playerStatus = standright;
+        im_show = im_standright;
+        animId = 0;
 
-	void beginJump() // æŒ‰ä¸‹wæˆ–å‘ä¸Šæ–¹å‘é”®åï¼Œæ¸¸æˆè§’è‰²è·³è·ƒçš„å¤„ç†
-	{
-		if (playerStatus != jumpleft && playerStatus != jumpright) // å·²ç»åœ¨ç©ºä¸­çš„è¯ï¼Œä¸è¦èµ·è·³
-		{
-			if (playerStatus == standleft)  // èµ·è·³å‰æ˜¯å‘å·¦è·‘æˆ–å‘å·¦ç«™ç«‹çŠ¶æ€
-			{
-				im_show = im_jumpleft; // åˆ‡æ¢åˆ°å‘å·¦èµ·è·³å›¾ç‰‡
-				playerStatus = jumpleft; // åˆ‡æ¢åˆ°å‘å·¦èµ·è·³çŠ¶æ€
-			}
-			else if (playerStatus == standright)// èµ·è·³å‰æ˜¯å‘å³è·‘æˆ–å‘å³ç«™ç«‹çŠ¶æ€
-			{
-				im_show = im_jumpright;// åˆ‡æ¢åˆ°å‘å³èµ·è·³å›¾ç‰‡
-				playerStatus = jumpright;// åˆ‡æ¢åˆ°å‘å³èµ·è·³çŠ¶æ€
-			}
-			vy = -40; // ç»™è§’è‰²ä¸€ä¸ªå‘ä¸Šçš„åˆé€Ÿåº¦
-		}
-	}
+        // ³õÊ¼Î»ÖÃ£¨Íø¸ñ×ø±ê£©
+        x = GRID_WIDTH / 2;
+        y = 0;  // ´Ó¶¥²¿¿ªÊ¼£¨0±íÊ¾×îÉÏÃæÒ»ĞĞ£©
 
-	// åˆ¤æ–­æ¸¸æˆè§’è‰²æ˜¯å¦æ­£ç«™åœ¨è¿™å—åœ°é¢ä¸Šï¼Œå¦‚æœæ˜¯çš„è¯è¿”å›1ï¼Œå¦åˆ™è¿”å›0
-	int isOnLand(Land& land, float ySpeed)
-	{
-		float x_right = x_left + width;
-		// åˆ¤æ–­æ˜¯å¦ç«™åœ¨åœ°é¢ä¸Šï¼Œè¿˜éœ€è¦è€ƒè™‘playerçš„yæ–¹å‘é€Ÿåº¦æƒ…å†µï¼Œé€Ÿåº¦è¿‡å¿«æœ‰å¯èƒ½ç›´æ¥ç©¿é€åœ°é¢
-		if (ySpeed <= 0) // yè½´æ–¹å‘é€Ÿåº¦å°äº0ï¼Œè¡¨ç¤ºæ­£åœ¨å‘ä¸Šè¿åŠ¨ï¼Œä¸éœ€è¦è€ƒè™‘é€Ÿåº¦çš„å½±å“
-			ySpeed = 0;
-		if (land.left_x - x_left <= width * 0.6 && x_right - land.right_x <= width * 0.6 && abs(y_bottom - land.top_y) <= 3 + ySpeed)
-			return 1;
-		else
-			return 0;
-	}
+        vx = 0.2f;         // Ë®Æ½ËÙ¶È£¨Íø¸ñµ¥Î»/Ö¡£©
+        vy = 0.0f;         // ³õÊ¼ÊúÖ±ËÙ¶È
+        gravity = 0.1f;    // ÖØÁ¦¼ÓËÙ¶È
+    }
 
-	int isNotOnAllLands(vector<Land>& lands, float speed) // åˆ¤æ–­ç©å®¶æ˜¯å¦ä¸åœ¨æ‰€æœ‰çš„åœ°é¢ä¸Š
-	{
-		for (int i = 0;i < lands.size();i++)
-		{
-			if (isOnLand(lands[i], speed))
-				return 0; // åœ¨ä»»ä½•ä¸€å—åœ°é¢ä¸Šï¼Œè¿”å›0
-		}
-		return 1; // ä¸åœ¨æ‰€æœ‰åœ°é¢ä¸Šï¼Œè¿”å›1
-	}
+    void updateXY(float gridX, float gridY) // ¸üĞÂÍø¸ñ×ø±ê
+    {
+        // ±ß½ç¼ì²é
+        if (gridX < 0) gridX = 0;
+        if (gridX > GRID_WIDTH - 1) gridX = GRID_WIDTH - 1;
+        if (gridY < 0) gridY = 0;
+        if (gridY > GRID_HEIGHT - 1) gridY = GRID_HEIGHT - 1;
 
-	void updateYcoordinate(Scene& scene) // xåæ ‡æ˜¯æŒ‰é”®ç›˜æ§åˆ¶çš„ï¼Œè€Œyåæ ‡æ˜¯æ¯å¸§è‡ªåŠ¨æ›´æ–°çš„
-	{
-		if (playerStatus == jumpleft || playerStatus == jumpright) // å½“å‰æ˜¯åœ¨ç©ºä¸­è·³è·ƒçŠ¶æ€
-		{
-			if(vy<=8){
-				vy += gravity; // yæ–¹å‘é€Ÿåº¦å—é‡åŠ›å½±å“å˜åŒ–
-			}
-			y_bottom += vy;  // yæ–¹å‘ä½ç½®å—é€Ÿåº¦å½±å“å˜åŒ–
-			for (int i = 0;i < scene.lands.size();i++)   // å¯¹æ‰€æœ‰åœ°é¢éå†
-			{
-				if (isOnLand(scene.lands[i], vy)) // å½“ç«æŸ´äººæ­£å¥½ç«™åœ¨ä¸€ä¸ªåœ°é¢ä¸Šæ—¶
-				{
-					y_bottom = scene.lands[i].top_y; // ä¿è¯æ­£å¥½è½åœ¨åœ°é¢ä¸Š
-					if (playerStatus == jumpleft) // å‘å·¦è·³ï¼Œè½åœ°ååˆ‡æ¢åˆ°å‘å·¦ç«™ç«‹æ–¹å‘
-						playerStatus = standleft;
-					if (playerStatus == jumpright) // å‘å³è·³ï¼Œè½åœ°ååˆ‡æ¢åˆ°å‘å³ç«™ç«‹æ–¹å‘
-						playerStatus = standright;
-					break; // è·³å‡ºå¾ªç¯ï¼Œä¸éœ€è¦å†å¯¹å…¶ä»–åœ°é¢åˆ¤æ–­äº†
-				}
-			}
-		}
-	}
+        x = gridX;
+        y = gridY;
+    }
+
+    void runRight(Scene& scene) // ÏòÓÒ±¼ÅÜ
+    {
+        float newX = x + vx;
+
+        // ¼ì²éÊÇ·ñ¿ÉÒÔÒÆ¶¯£¨±ÜÃâ´©Ç½£©
+        if (!isCollidingWithLand(scene, newX, y)) {
+            x = newX;
+        }
+
+        // ¸üĞÂ×´Ì¬ºÍ¶¯»­
+        if (playerStatus == jumpleft || playerStatus == jumpright) {
+            im_show = im_jumpright;
+            playerStatus = jumpright;
+        }
+        else {
+            playerStatus = standright;
+            animId = (animId + 1) % ims_runright.size();
+            im_show = ims_runright[animId];
+        }
+    }
+
+    void runLeft(Scene& scene) // Ïò×ó±¼ÅÜ
+    {
+        float newX = x - vx;
+
+        // ¼ì²éÊÇ·ñ¿ÉÒÔÒÆ¶¯£¨±ÜÃâ´©Ç½£©
+        if (!isCollidingWithLand(scene, newX, y)) {
+            x = newX;
+        }
+
+        // ¸üĞÂ×´Ì¬ºÍ¶¯»­
+        if (playerStatus == jumpleft || playerStatus == jumpright) {
+            im_show = im_jumpleft;
+            playerStatus = jumpleft;
+        }
+        else {
+            playerStatus = standleft;
+            animId = (animId + 1) % ims_runleft.size();
+            im_show = ims_runleft[animId];
+        }
+    }
+
+    void standStill() // ¾²Ö¹Õ¾Á¢
+    {
+        if (playerStatus == standleft) {
+            im_show = im_standleft;
+        }
+        else if (playerStatus == standright) {
+            im_show = im_standright;
+        }
+    }
+
+    // ÌøÔ¾´¦Àí£¨Ôö¼Óscene²ÎÊı£¬ÓÃÓÚ´«µİ³¡¾°ĞÅÏ¢£©
+    void beginJump(Scene& scene)
+    {
+        // ½öÔÚµØÃæÉÏÊ±¿ÉÌøÔ¾
+        if (isOnGround(scene)) {  // µ÷ÓÃ´ø³¡¾°²ÎÊıµÄisOnGround
+            vy = -1.5f;  // ÏòÉÏÌøÔ¾ËÙ¶È
+            if (playerStatus == standleft) {
+                playerStatus = jumpleft;
+                im_show = im_jumpleft;
+            }
+            else {
+                playerStatus = jumpright;
+                im_show = im_jumpright;
+            }
+        }
+    }
+
+    // ¼ì²é½ÇÉ«ÊÇ·ñÔÚµØÃæÉÏ£¨Ôö¼Óscene²ÎÊı£¬ÓÃÓÚ»ñÈ¡µØĞÎ£©
+    bool isOnGround(Scene& scene)
+    {
+        // ¼ì²é½ÇÉ«ÏÂ·½µÄÍø¸ñÊÇ·ñÎª¿ÉÕ¾Á¢µÄµØÃæ
+        int gridY = static_cast<int>(y) + 1;
+        if (gridY >= GRID_HEIGHT) return false;
+
+        // »ñÈ¡½ÇÉ«µ×²¿ËùÔÚµÄÍø¸ñÁĞ
+        int startCol = static_cast<int>(x);
+        int endCol = static_cast<int>(x + width / GRID_SIZE);
+        if (endCol > GRID_WIDTH - 1) endCol = GRID_WIDTH - 1;
+
+        // ¼ì²é½ÇÉ«ÏÂ·½µÄÍø¸ñÊÇ·ñÓĞ¿ÉÕ¾Á¢µÄµØÃæ
+        for (int col = startCol; col <= endCol; col++) {
+            LandType landType = getLandTypeAt(scene, col, gridY);  // µ÷ÓÃ´ø³¡¾°²ÎÊıµÄgetLandTypeAt
+            if (landType != EMPTY) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // ¼ì²éÊÇ·ñÓëµØÃæÅö×²
+    bool isCollidingWithLand(Scene& scene, float testX, float testY)
+    {
+        // ¼ÆËã½ÇÉ«ËùÔÚµÄÍø¸ñ·¶Î§
+        int startRow = static_cast<int>(testY);
+        int endRow = static_cast<int>(testY + height / GRID_SIZE);
+        int startCol = static_cast<int>(testX);
+        int endCol = static_cast<int>(testX + width / GRID_SIZE);
+
+        // ±ß½ç¼ì²é
+        if (startRow < 0) startRow = 0;
+        if (endRow >= GRID_HEIGHT) endRow = GRID_HEIGHT - 1;
+        if (startCol < 0) startCol = 0;
+        if (endCol >= GRID_WIDTH) endCol = GRID_WIDTH - 1;
+
+        // ¼ì²é·¶Î§ÄÚµÄËùÓĞÍø¸ñ
+        for (int row = startRow; row <= endRow; row++) {
+            for (int col = startCol; col <= endCol; col++) {
+                LandType landType = getLandTypeAt(scene, col, row);  // µ÷ÓÃ´ø³¡¾°²ÎÊıµÄgetLandTypeAt
+                if (landType != EMPTY) {
+                    return true; // Óë·Ç¿ÕµØÃæÅö×²
+                }
+            }
+        }
+
+        return false;
+    }
+
+    void updateYcoordinate(Scene& scene) // ¸üĞÂÊúÖ±×ø±ê£¨ÎïÀíÄ£Äâ£©
+    {
+        if (playerStatus == jumpleft || playerStatus == jumpright) {
+            // Ó¦ÓÃÖØÁ¦
+            vy += gravity;
+
+            // ¼ÆËãĞÂÎ»ÖÃ
+            float newY = y + vy;
+
+            // ¼ì²éÅö×²
+            if (isCollidingWithLand(scene, x, newY)) {
+                // ·¢ÉúÅö×²£¬µ÷ÕûÎ»ÖÃµ½×î½üµÄ·ÇÅö×²Î»ÖÃ
+                if (vy > 0) { // ÏÂÂä
+                    // ÕÒµ½½ÇÉ«ÏÂ·½×î½üµÄµØÃæ
+                    int gridY = static_cast<int>(y) + 1;
+                    while (gridY < GRID_HEIGHT) {
+                        if (isCollidingWithLand(scene, x, gridY)) {
+                            y = gridY - height / GRID_SIZE;
+                            vy = 0;
+                            playerStatus = (playerStatus == jumpleft) ? standleft : standright;
+                            break;
+                        }
+                        gridY++;
+                    }
+                }
+                else { // ÉÏÉı
+                    // ÕÒµ½½ÇÉ«ÉÏ·½×î½üµÄÕÏ°­Îï
+                    int gridY = static_cast<int>(y);
+                    while (gridY >= 0) {
+                        if (isCollidingWithLand(scene, x, gridY)) {
+                            y = gridY + 1;
+                            vy = 0;
+                            break;
+                        }
+                        gridY--;
+                    }
+                }
+            }
+            else {
+                // Ã»ÓĞÅö×²£¬¸üĞÂÎ»ÖÃ
+                y = newY;
+            }
+
+            // ±ß½ç¼ì²é
+            if (y > GRID_HEIGHT - 1) {
+                // µô³öÆÁÄ»µ×²¿£¬ÖØÖÃÓÎÏ·
+                initialize();
+            }
+        }
+    }
+
+    // »ñÈ¡Ö¸¶¨Íø¸ñÎ»ÖÃµÄµØÃæÀàĞÍ£¨Ôö¼Óscene²ÎÊı£¬´Ó³¡¾°ÖĞ»ñÈ¡µØĞÎ£©
+    LandType getLandTypeAt(Scene& scene, int gridX, int gridY)
+    {
+        if (gridX < 0 || gridX >= GRID_WIDTH || gridY < 0 || gridY >= GRID_HEIGHT) {
+            return EMPTY; // ³¬³ö±ß½çÊÓÎª¿Õ
+        }
+
+        // Í¨¹ı³¡¾°µÄgetLandType·½·¨»ñÈ¡Êµ¼ÊµØĞÎÀàĞÍ
+        return scene.getLandType(gridX, gridY);
+    }
 };
