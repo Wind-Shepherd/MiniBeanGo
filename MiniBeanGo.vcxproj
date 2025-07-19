@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{5a923467-5099-4b21-b4f8-931067a9f6d0}</ProjectGuid>
+    <RootNamespace>MiniBeanGo</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EasyXPng.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Gate.h" />
+    <ClInclude Include="GroundThorn.h" />
+    <ClInclude Include="HealthHeart.h" />
+    <ClInclude Include="Key.h" />
+    <ClInclude Include="Ladder.h" />
+    <ClInclude Include="Land.h" />
+    <ClInclude Include="MusicPlayer.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Rod.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Star.h" />
+    <ClInclude Include="Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="BRICK_BLOCK.png" />
+    <Image Include="Climb.png" />
+    <Image Include="Dada0.png" />
+    <Image Include="Dada1.png" />
+    <Image Include="DadaRight0.png" />
+    <Image Include="DadaRight1.png" />
+    <Image Include="Dieleft.png" />
+    <Image Include="Dieright.png" />
+    <Image Include="DIRT_PATH0.png" />
+    <Image Include="DIRT_PATH1.png" />
+    <Image Include="DIRT_PATH2.png" />
+    <Image Include="DIRT_PATH3.png" />
+    <Image Include="DIRT_PATH4.png" />
+    <Image Include="DIRT_PATH5.png" />
+    <Image Include="DIRT_PATH6.png" />
+    <Image Include="DIRT_PATH66.png" />
+    <Image Include="DIRT_PATH7.png" />
+    <Image Include="Feifei0.png" />
+    <Image Include="Feifei1.png" />
+    <Image Include="Feifei2.png" />
+    <Image Include="GameOverImg.png" />
+    <Image Include="gate.png" />
+    <Image Include="gate1.png" />
+    <Image Include="grass0.png" />
+    <Image Include="grass1.png" />
+    <Image Include="grass2.png" />
+    <Image Include="grass3.png" />
+    <Image Include="GRASS_BLOCK0.png" />
+    <Image Include="GRASS_BLOCK1.png" />
+    <Image Include="GRASS_BLOCK2.png" />
+    <Image Include="GRASS_BLOCK3.png" />
+    <Image Include="GRASS_BLOCK4.png" />
+    <Image Include="GRASS_BLOCK5.png" />
+    <Image Include="GRASS_BLOCK6.png" />
+    <Image Include="GRASS_BLOCK7.png" />
+    <Image Include="groundthorn.png" />
+    <Image Include="heart_empty.png" />
+    <Image Include="heart_full.png" />
+    <Image Include="heart_half.png" />
+    <Image Include="Hurtleft.png" />
+    <Image Include="Hurtright.png" />
+    <Image Include="Jumpleft.png" />
+    <Image Include="Jumpright.png" />
+    <Image Include="key.png" />
+    <Image Include="Ladder.png" />
+    <Image Include="LadderTop.png" />
+    <Image Include="landscape1.png" />
+    <Image Include="mechanism.png" />
+    <Image Include="rod_closed.png" />
+    <Image Include="rod_open.png" />
+    <Image Include="Runleft.png" />
+    <Image Include="Runright.png" />
+    <Image Include="snow0.png" />
+    <Image Include="snow1.png" />
+    <Image Include="snow2.png" />
+    <Image Include="snow3.png" />
+    <Image Include="SNOW_BLOCK0.png" />
+    <Image Include="SNOW_BLOCK1.png" />
+    <Image Include="SNOW_BLOCK2.png" />
+    <Image Include="SNOW_BLOCK3.png" />
+    <Image Include="SNOW_BLOCK4.png" />
+    <Image Include="SNOW_BLOCK5.png" />
+    <Image Include="SNOW_BLOCK6.png" />
+    <Image Include="SNOW_BLOCK7.png" />
+    <Image Include="SOIL_BLOCK0.png" />
+    <Image Include="SOIL_BLOCK1.png" />
+    <Image Include="SOIL_BLOCK2.png" />
+    <Image Include="SOIL_BLOCK3.png" />
+    <Image Include="SOIL_BLOCK4.png" />
+    <Image Include="SOIL_BLOCK5.png" />
+    <Image Include="SOIL_BLOCK6.png" />
+    <Image Include="SOIL_BLOCK7.png" />
+    <Image Include="Standleft.png" />
+    <Image Include="Standright.png" />
+    <Image Include="star.png" />
+    <Image Include="StartPlayer.png" />
+    <Image Include="Xiaoxiao0.png" />
+    <Image Include="Xiaoxiao1.png" />
+    <Image Include="XiaoxiaoRight0.png" />
+    <Image Include="XiaoxiaoRight1.png" />
+    <Image Include="YouWinImg.jpg" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
